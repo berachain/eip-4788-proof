@@ -56,13 +56,14 @@ contract WithdrawalsVerifier {
         view
         returns (bytes32 root)
     {
-        (bool success, bytes memory data) =
-            BEACON_ROOTS.staticcall(abi.encode(ts));
-
-        if (!success || data.length == 0) {
-            revert RootNotFound();
+        assembly ("memory-safe") {
+            mstore(0, ts)
+            let success := staticcall(gas(), BEACON_ROOTS, 0, 0x20, 0, 0x20)
+            if iszero(success) {
+                mstore(0, 0x3033b0ff) // RootNotFound()
+                revert(0x1c, 0x04)
+            }
+            root := mload(0)
         }
-
-        root = abi.decode(data, (bytes32));
     }
 }
