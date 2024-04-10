@@ -7,7 +7,7 @@ contract ValidatorVerifier {
     address public constant BEACON_ROOTS =
         0x000F3df6D732807Ef1319fB7B8bB8522d0Beac02;
 
-    uint64 constant VALIDATOR_REGISTRY_LIMIT = 2 ** 40;
+    uint64 internal constant VALIDATOR_REGISTRY_LIMIT = 2 << 40;
 
     /// @dev Generalized index of the first validator struct root in the
     /// registry.

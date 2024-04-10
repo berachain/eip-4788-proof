@@ -3,7 +3,7 @@ pragma solidity ^0.8.21;
 
 library SSZ {
     /// @dev sha256 precompile address.
-    uint8 constant SHA256 = 0x02;
+    uint8 internal constant SHA256 = 0x02;
 
     error BranchHasMissingItem();
     error BranchHasExtraItem();
