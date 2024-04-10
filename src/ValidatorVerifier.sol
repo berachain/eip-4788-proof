@@ -23,25 +23,17 @@ contract ValidatorVerifier is Verifier {
         uint64 validatorIndex,
         uint64 ts
     ) public {
-        require(
-            validatorIndex < VALIDATOR_REGISTRY_LIMIT,
-            "validator index out of range"
-        );
+        if (validatorIndex >= VALIDATOR_REGISTRY_LIMIT) {
+            revert IndexOutOfRange();
+        }
 
         uint256 gI = gIndex + validatorIndex;
-        bytes32 validatoRoot = SSZ.validatorHashTreeRoot(validator);
+        bytes32 validatorRoot = SSZ.validatorHashTreeRoot(validator);
         bytes32 blockRoot = getParentBlockRoot(ts);
 
-        require(
-            // forgefmt: disable-next-item
-            SSZ.verifyProof(
-                validatorProof,
-                blockRoot,
-                validatoRoot,
-                gI
-            ),
-            "invalid validator proof"
-        );
+        if (!SSZ.verifyProof(validatorProof, blockRoot, validatorRoot, gI)) {
+            revert InvalidProof();
+        }
 
         emit Accepted(validatorIndex);
     }

@@ -23,26 +23,17 @@ contract WithdrawalsVerifier is Verifier {
         uint8 withdrawalIndex,
         uint64 ts
     ) public {
-        // forgefmt: disable-next-item
-        require(
-            withdrawalIndex < MAX_WITHDRAWALS,
-            "withdrawal index out of range"
-        );
+        if (withdrawalIndex >= MAX_WITHDRAWALS) {
+            revert IndexOutOfRange();
+        }
 
         uint256 gI = gIndex + withdrawalIndex;
         bytes32 withdrawalRoot = SSZ.withdrawalHashTreeRoot(withdrawal);
         bytes32 blockRoot = getParentBlockRoot(ts);
 
-        require(
-            // forgefmt: disable-next-item
-            SSZ.verifyProof(
-                withdrawalProof,
-                blockRoot,
-                withdrawalRoot,
-                gI
-            ),
-            "invalid withdrawal proof"
-        );
+        if (!SSZ.verifyProof(withdrawalProof, blockRoot, withdrawalRoot, gI)) {
+            revert InvalidProof();
+        }
 
         emit WithdrawalSubmitted(withdrawal.validatorIndex, withdrawal.amount);
     }
