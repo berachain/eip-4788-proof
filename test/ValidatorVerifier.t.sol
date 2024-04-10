@@ -24,10 +24,7 @@ contract ValidatorVerifierTest is Test {
     ProofJson public proofJson;
 
     function setUp() public {
-        string memory root = vm.projectRoot();
-        string memory path =
-            string.concat(root, "/test/fixtures/validator_proof.json");
-        string memory json = vm.readFile(path);
+        string memory json = vm.readFile("./test/fixtures/validator_proof.json");
         bytes memory data = json.parseRaw("$");
         proofJson = abi.decode(data, (ProofJson));
     }
