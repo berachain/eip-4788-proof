@@ -3,7 +3,6 @@ pragma solidity ^0.8.21;
 
 import { Test } from "forge-std/Test.sol";
 import { stdJson } from "forge-std/StdJson.sol";
-import { Vm } from "forge-std/Vm.sol";
 
 import { SSZ } from "../src/SSZ.sol";
 import { WithdrawalsVerifier } from "../src/WithdrawalsVerifier.sol";
@@ -18,16 +17,14 @@ contract WithdrawalsVerifierTest is Test {
         bytes32 blockRoot;
     }
 
-    uint256 constant DENEB_ZERO_WITHDRAWAL_GINDEX = 206272;
+    uint256 internal constant DENEB_ZERO_WITHDRAWAL_GINDEX = 206272;
 
     WithdrawalsVerifier public verifier;
     ProofJson public proofJson;
 
     function setUp() public {
-        string memory root = vm.projectRoot();
-        string memory path =
-            string.concat(root, "/test/fixtures/withdrawal_proof.json");
-        string memory json = vm.readFile(path);
+        string memory json =
+            vm.readFile("./test/fixtures/withdrawal_proof.json");
         bytes memory data = json.parseRaw("$");
         proofJson = abi.decode(data, (ProofJson));
         verifier = new WithdrawalsVerifier(DENEB_ZERO_WITHDRAWAL_GINDEX);

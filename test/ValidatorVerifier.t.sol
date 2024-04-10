@@ -3,7 +3,6 @@ pragma solidity ^0.8.21;
 
 import { Test } from "forge-std/Test.sol";
 import { stdJson } from "forge-std/StdJson.sol";
-import { Vm } from "forge-std/Vm.sol";
 
 import { SSZ } from "../src/SSZ.sol";
 import { ValidatorVerifier } from "../src/ValidatorVerifier.sol";
@@ -18,16 +17,13 @@ contract ValidatorVerifierTest is Test {
         bytes32 blockRoot;
     }
 
-    uint256 constant DENEB_ZERO_VALIDATOR_GINDEX = 798245441765376;
+    uint256 internal constant DENEB_ZERO_VALIDATOR_GINDEX = 798245441765376;
 
     ValidatorVerifier public verifier;
     ProofJson public proofJson;
 
     function setUp() public {
-        string memory root = vm.projectRoot();
-        string memory path =
-            string.concat(root, "/test/fixtures/validator_proof.json");
-        string memory json = vm.readFile(path);
+        string memory json = vm.readFile("./test/fixtures/validator_proof.json");
         bytes memory data = json.parseRaw("$");
         proofJson = abi.decode(data, (ProofJson));
     }
