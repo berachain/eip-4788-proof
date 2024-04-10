@@ -5,7 +5,7 @@ import { SSZ } from "./SSZ.sol";
 import { Verifier } from "./Verifier.sol";
 
 contract WithdrawalsVerifier is Verifier {
-    uint64 internal constant MAX_WITHDRAWALS = 2 << 4;
+    uint64 internal constant MAX_WITHDRAWALS = 1 << 4;
 
     // Generalized index of the first withdrawal struct root in the withdrawals.
     uint256 public immutable gIndex;

@@ -5,7 +5,7 @@ import { SSZ } from "./SSZ.sol";
 import { Verifier } from "./Verifier.sol";
 
 contract ValidatorVerifier is Verifier {
-    uint64 internal constant VALIDATOR_REGISTRY_LIMIT = 2 << 40;
+    uint64 internal constant VALIDATOR_REGISTRY_LIMIT = 1 << 40;
 
     /// @dev Generalized index of the first validator struct root in the
     /// registry.
